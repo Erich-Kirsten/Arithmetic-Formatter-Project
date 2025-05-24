@@ -1,0 +1,56 @@
+def arithmetic_arranger(problems, show_answers=False):
+    if len(problems) > 5:
+        return 'Error: Too many problems.'
+
+    top_line = []
+    bottom_line = []
+    dash_line = []
+    answer_line = []
+
+    for problem in problems:
+        parts = problem.split()
+        operand1 = parts[0]
+        operator = parts[1]
+        operand2 = parts[2]
+
+        # Error checks
+        if operator not in ['+', '-']:
+            return "Error: Operator must be '+' or '-'."
+
+        if not operand1.isdigit() or not operand2.isdigit():
+            return 'Error: Numbers must only contain digits.'
+
+        if len(operand1) > 4 or len(operand2) > 4:
+            return 'Error: Numbers cannot be more than four digits.'
+
+        # Formatting width
+        width = max(len(operand1), len(operand2)) + 2
+
+        # Build each line
+        top = operand1.rjust(width)
+        bottom = operator + operand2.rjust(width - 1)
+        dash = '-' * width
+
+        top_line.append(top)
+        dash_line.append(dash)
+
+        # Calculate result only if show_answers is True
+        if show_answers:
+            if operator == '+':
+                result = str(int(operand1) + int(operand2))
+            else:
+                result = str(int(operand1) - int(operand2))
+            answer = result.rjust(width)
+            answer_line.append(answer)
+
+    # Join lines with 4 spaces between problems
+    arranged_problems = '    '.join(top_line) + '\n' + \
+                        '    '.join(bottom_line) + '\n' + \
+                        '    '.join(dash_line)
+
+    if show_answers:
+        arranged_problems += '\n' + '    '.join(answer_line)
+
+    return arranged_problems
+
+arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49"])
